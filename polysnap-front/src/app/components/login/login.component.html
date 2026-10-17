@@ -1,0 +1,35 @@
+<div class="Wrapper" >
+    <div class="logo-container">
+      <img src="assets/logo.png" alt="PolySnap Logo">
+    </div>
+    <div class="credentialBlock">
+      <div class="top">
+          <p>Connect to PolySnap</p>
+      </div>
+
+      <div class="container-log-reg">
+        <div>
+          <input [disabled]="isLoading" [(ngModel)]="username" type="text" placeholder="Enter Username" class="inp" maxlength="10" required>
+        </div>
+        <br>
+        <img *ngIf="isLoading" style="align-self: center; width: 20%; height: auto" src="assets/loading.gif" alt="Loading...">
+        <button [class.disabled]="username.length == 0 || isLoading" *ngIf="loginMode" class="button" (click)="login()">Login</button>
+        <div *ngIf="loginMode" class="mt-2">
+          Don't have an account? <a (click)="loginMode = false; username = ''">Register</a>
+        </div>
+        <button [class.disabled]="username.length == 0 || isLoading" *ngIf="!loginMode" class="button" (click)="register()">Register</button>
+        <div *ngIf="!loginMode" class="mt-2">
+          Already have an account? <a (click)="loginMode = true; username = ''">Login</a>
+        </div>
+    </div>
+  </div>
+</div>
+
+<section>
+  <div class='air air1'></div>
+  <div class='air air2'></div>
+  <div class='air air3'></div>
+  <div class='air air4'></div>
+</section>
+
+

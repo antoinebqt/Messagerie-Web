@@ -1,0 +1,8 @@
+<div [ngStyle]="{'display': position.length === 0 ? 'none' : 'block'}" class="map-wrap">
+  <div class="map-header">
+    <div>Localisation</div>
+    <button class="close-button" style="background-color: #70702e; margin-left: auto;margin-right: 5px" (click)="reload()">Reload</button>
+    <button class="close-button" (click)="closeMap()">Close</button>
+  </div>
+  <div class="map" #map></div>
+</div>

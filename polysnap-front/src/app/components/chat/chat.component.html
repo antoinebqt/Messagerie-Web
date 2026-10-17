@@ -1,0 +1,92 @@
+<div class="Wrapper">
+
+  <div class="d-flex align-items-center" style="margin-top:5px">
+    <button mat-fab class="goBackIcon" style="margin-left:10px">
+      <i class="material-icons" (click)="redirectToLogin()">arrow_back</i>
+    </button>
+    <mat-slide-toggle style="margin-left:10px; color: white" [(ngModel)]="devMode" (change)="changeDevMode()" class="DevModeButton" >DevMode</mat-slide-toggle>
+  </div>
+
+  <div class="TopDiv">
+    <div class="phrase">
+      Hi {{username}}, choose a user to chat with:
+    </div>
+    <mat-form-field>
+      <mat-select [(ngModel)]="userToChat" (selectionChange)="chooseUserToChat()">
+        <div *ngFor="let user of users">
+          <mat-option [value]="user">{{ user.username }}</mat-option>
+        </div>
+      </mat-select>
+      <mat-label>User to chat</mat-label>
+    </mat-form-field>
+  </div>
+
+  <div style="align-self: center">
+    <mat-slide-toggle style="margin-top: 10px; color: white" [(ngModel)]="autoScrollActivated" (change)="scrollToBottom()" class="DevModeButton" >AutoScroll</mat-slide-toggle>
+  </div>
+
+  <div class="chat-container">
+    <div class="chat-window">
+      <div *ngIf="isLoading">
+        <img style="position: absolute; top: 50%; left: 50%; translate: -50%" src="assets/loading.gif" alt="Loading...">
+      </div>
+      <div class="messages" #scrollingDiv>
+        <div *ngFor="let message of messages" class="message">
+          <div *ngIf="isMessagePos(message.messageBody)" [ngClass]="{'user-message': user.id == message.snapUserId, 'other-message': user.id != message.snapUserId}">
+            <div class="locationMessage"  (click)="getPosition(message.messageBody)" [ngClass]="{'user-message': user.id == message.snapUserId, 'other-message': user.id != message.snapUserId}">
+              <i class="material-icons locIcon">add_location_alt</i>
+              <span>click to see location</span>
+            </div>
+          </div>
+          <div *ngIf="isMessageImage(message.messageBody)" [ngClass]="{'user-message': user.id == message.snapUserId, 'other-message': user.id != message.snapUserId}">
+            <img [src]="getUrl(message.messageBody)" alt="Image" class="image-chat" />
+          </div>
+          <div *ngIf="isMessageAudio(message.messageBody)" [ngClass]="{'user-message': user.id == message.snapUserId, 'other-message': user.id != message.snapUserId}">
+            <audio controls>
+              <source [src]="getUrl(message.messageBody)" type="audio/mpeg">
+              Your browser does not support the audio element.
+            </audio>
+          </div>
+          <div *ngIf="isMessageVideo(message.messageBody)" [ngClass]="{'user-message': user.id == message.snapUserId, 'other-message': user.id != message.snapUserId}">
+            <video controls width="320" height="240">
+              <source [src]="getUrl(message.messageBody)" type="video/mp4">
+              Your browser does not support the video tag.
+            </video>
+          </div>
+          <div class="" (click)="onClickMessage(message.id)" *ngIf="!isMessagePos(message.messageBody) && !isMessageImage(message.messageBody)&&!isMessageAudio(message.messageBody)&&!isMessageVideo(message.messageBody)" [ngClass]="{'user-message': user.id == message.snapUserId, 'other-message': user.id != message.snapUserId}">
+            {{ message.messageBody }}
+          </div>
+          <div class="bubble-container" [ngClass]="{'user-bubble': user.id == message.snapUserId, 'other-bubble': user.id != message.snapUserId}">
+            <div *ngIf="showLifespanBubble && selectedMessage === message.id" class="lifespan-bubble">
+              <p>{{ message.lifespan | lifespanTime }}</p>
+            </div>
+          </div>
+        </div>
+      </div>
+      <div class="all-input-div">
+        <input type="file" (change)="onFileChange($event)" [(ngModel)]="fileSelected" accept=".mp3, .mp4, image/*" />
+        <div class="input-box">
+          <input class="input-text" *ngIf="!messageIsFile&& !messageIsLocation" [(ngModel)]="newMessage" (keyup.enter)="sendMessage()" placeholder="Type your message..." />
+          <input *ngIf="messageIsFile" class="input-taken"  placeholder="Press send to submit your file." disabled />
+          <input *ngIf="messageIsLocation" class="input-taken"  placeholder="Press send to share your location." disabled />
+          <div *ngIf="!messageIsLocation&& !messageIsFile" class="position-sender" (click)="sendLocation()">
+            <i class="material-icons locIcon">add_location_alt</i>
+            PolyFindMe
+          </div>
+          <mat-form-field class="custom-mat-select">
+            <mat-label>PolySmoke</mat-label>
+            <mat-select [(ngModel)]="timer">
+              <div *ngFor="let time of timersAvailable">
+                <mat-option *ngIf="time.value !== -1" [value]="time">{{ time.value }}{{ time.unit }}</mat-option>
+              </div>
+              <mat-option *ngIf="!messageIsFile" [value]="timersAvailable[timersAvailable.length-1]">Never</mat-option>
+            </mat-select>
+          </mat-form-field>
+          <button *ngIf="messageIsFile|| messageIsLocation" (click)="cancelMessage()" style="background-color: #ff0072;">Cancel</button>
+          <button (click)="sendMessage()">Send</button>
+        </div>
+      </div>
+    </div>
+  </div>
+  <app-map [position]="locationToDisplay"></app-map>
+</div>

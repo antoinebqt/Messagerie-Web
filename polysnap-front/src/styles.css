@@ -1,0 +1,37 @@
+@import '~maplibre-gl/dist/maplibre-gl.css';
+
+@font-face {
+  font-family: 'AntikorMonoBold'; /* Police d'écriture par défaut */
+  src: url('./assets/antikor-mono-bold.ttf') format('opentype');
+}
+
+/* You can add global styles to this file, and also import other style files */
+* {
+  font-family: 'AntikorMonoBold', sans-serif;
+}
+
+h1 {
+  font-family: 'AntikorMonoBold', sans-serif;
+}
+
+body {
+  margin: 0;
+
+}
+
+html, body { height: 100%; }
+body { margin: 0; font-family: Roboto, "Helvetica Neue", sans-serif; }
+
+.pr-2 {
+  padding-right: 0.5rem !important;
+}
+
+.pr-3 {
+  padding-right: 1rem !important;
+}
+
+.pl-2 {
+  padding-left: 0.5rem !important;
+}
+
+

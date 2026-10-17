@@ -1,0 +1,14 @@
+<div class="header">
+  <mat-form-field>
+    <mat-select [(ngModel)]="userToChat" (selectionChange)="emitUsernameEvent()" style="margin:0px">
+      <div *ngFor="let user of users">
+        <mat-option [value]="user">{{ user.username }}</mat-option>
+      </div>
+    </mat-select>
+    <mat-label>User to be</mat-label>
+  </mat-form-field>
+  <button mat-raised-button color="warn" (click)="resetDB()">
+    Reset DB
+  </button>
+</div>
+
